@@ -10,6 +10,7 @@ import { QueueService } from './queue_service.js'
 import { RunDownloadJob } from '#jobs/run_download_job'
 import { zimCategoriesSpecSchema, mapsSpecSchema, wikipediaSpecSchema, creatorPacksSpecSchema } from '#validators/curated_collections'
 import { isGatedResource } from '../utils/hosted_content.js'
+import { distRawUrl } from '../utils/distribution.js'
 import {
   ensureDirectoryExists,
   listDirectoryContents,
@@ -28,11 +29,12 @@ import type {
   SpecTier,
 } from '../../types/collections.js'
 
-const SPEC_URLS: Record<ManifestType, string> = {
-  zim_categories: 'https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/collections/kiwix-categories.json',
-  maps: 'https://github.com/Crosstalk-Solutions/project-nomad/raw/refs/heads/main/collections/maps.json',
-  wikipedia: 'https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/collections/wikipedia.json',
-  creator_packs: 'https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/collections/creator-packs.json',
+/** Manifest file per type, fetched from this distribution's repo (see utils/distribution). */
+const SPEC_PATHS: Record<ManifestType, string> = {
+  zim_categories: 'collections/kiwix-categories.json',
+  maps: 'collections/maps.json',
+  wikipedia: 'collections/wikipedia.json',
+  creator_packs: 'collections/creator-packs.json',
 }
 
 const VALIDATORS: Record<ManifestType, any> = {
@@ -49,7 +51,7 @@ export class CollectionManifestService {
 
   async fetchAndCacheSpec(type: ManifestType): Promise<boolean> {
     try {
-      const response = await axios.get(SPEC_URLS[type], { timeout: 15000 })
+      const response = await axios.get(distRawUrl(SPEC_PATHS[type]), { timeout: 15000 })
 
       const validated = await vine.validate({
         schema: VALIDATORS[type],

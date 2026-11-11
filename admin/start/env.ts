@@ -76,4 +76,16 @@ export default await Env.create(new URL('../', import.meta.url), {
   */
   CREATOR_PACKS_APP_KEY: Env.schema.string.optional(),
   CREATOR_PACKS_WORKER_BASE: Env.schema.string.optional(),
+
+  /*
+  |----------------------------------------------------------
+  | Distribution channel (see constants/distribution.ts)
+  |----------------------------------------------------------
+  | Where content manifests, releases and the self-update image come from.
+  | Unset = this fork's defaults. NOMAD_DIST_REPO is a GitHub "owner/repo";
+  | NOMAD_DIST_IMAGE_REPO is an image name without a tag.
+  */
+  NOMAD_DIST_REPO: Env.schema.string.optional(),
+  NOMAD_DIST_BRANCH: Env.schema.string.optional(),
+  NOMAD_DIST_IMAGE_REPO: Env.schema.string.optional(),
 })

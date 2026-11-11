@@ -40,12 +40,14 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set lowercase image owner
+        run: echo "IMAGE_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_ENV"
       - name: Build and push
         uses: docker/build-push-action@v7
         with:
           context: install/sidecar-disk-collector
           push: true
           tags: |
-            ghcr.io/crosstalk-solutions/project-nomad-disk-collector:${{ inputs.version }}
-            ghcr.io/crosstalk-solutions/project-nomad-disk-collector:v${{ inputs.version }}
-            ${{ inputs.tag_latest && 'ghcr.io/crosstalk-solutions/project-nomad-disk-collector:latest' || '' }}
+            ghcr.io/${{ env.IMAGE_OWNER }}/project-nomad-disk-collector:${{ inputs.version }}
+            ghcr.io/${{ env.IMAGE_OWNER }}/project-nomad-disk-collector:v${{ inputs.version }}
+            ${{ inputs.tag_latest && 'ghcr.io/${{ env.IMAGE_OWNER }}/project-nomad-disk-collector:latest' || '' }}

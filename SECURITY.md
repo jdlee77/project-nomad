@@ -11,7 +11,7 @@ you are running an older release, please update before reporting an issue.
 
 Report it privately using GitHub's built-in reporting form:
 
-1. Go to the [Security tab](https://github.com/Crosstalk-Solutions/project-nomad/security)
+1. Go to the [Security tab](https://github.com/jdlee77/project-nomad/security)
 2. Click **Report a vulnerability**
 
 This creates a private advisory that only the maintainers can see. It stays
