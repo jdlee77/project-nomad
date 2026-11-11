@@ -42,9 +42,10 @@ import { assertNotPrivateUrl } from '#validators/common'
 import { resolveZimDownload } from '../utils/zim_download_resolution.js'
 import { getHostedContentHeaders } from '../utils/hosted_content_auth.js'
 import { KIWIX_CATALOG_BASE_URL } from '../../constants/kiwix.js'
+import { distRawUrl } from '../utils/distribution.js'
 
 const ZIM_MIME_TYPES = ['application/x-zim', 'application/x-openzim', 'application/octet-stream']
-const WIKIPEDIA_OPTIONS_URL = 'https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/collections/wikipedia.json'
+const WIKIPEDIA_OPTIONS_PATH = 'collections/wikipedia.json'
 
 @inject()
 export class ZimService {
@@ -802,7 +803,7 @@ export class ZimService {
 
   async getWikipediaOptions(): Promise<WikipediaOption[]> {
     try {
-      const response = await axios.get(WIKIPEDIA_OPTIONS_URL)
+      const response = await axios.get(distRawUrl(WIKIPEDIA_OPTIONS_PATH))
       const data = response.data
 
       const validated = await vine.validate({

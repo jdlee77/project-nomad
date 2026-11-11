@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { IconBug, IconCopy, IconCheck } from '@tabler/icons-react'
 import StyledModal from './StyledModal'
 import api from '~/lib/api'
+import { githubIssuesUrl } from '../../constants/distribution'
 
 interface DebugInfoModalProps {
   open: boolean
@@ -90,7 +91,7 @@ export default function DebugInfoModal({ open, onClose }: DebugInfoModalProps) {
         </button>
 
         <a
-          href="https://github.com/Crosstalk-Solutions/project-nomad/issues"
+          href={githubIssuesUrl()}
           target="_blank"
           rel="noopener noreferrer"
           className="text-sm text-desert-green hover:underline"

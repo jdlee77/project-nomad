@@ -21,6 +21,7 @@ import env from '#start/env'
 import KVStore from '#models/kv_store'
 import { KV_STORE_SCHEMA, KVStoreKey } from '../../types/kv_store.js'
 import { isNewerVersion } from '../utils/version.js'
+import { distReleasesApiUrl } from '../utils/distribution.js'
 import { isUnresolvedGpuModel } from '../utils/gpu_model.js'
 import {
   classifyOllamaComputeBackend,
@@ -688,14 +689,14 @@ export class SystemService {
       let latestVersion: string
       if (earlyAccess) {
         const response = await axios.get(
-          'https://api.github.com/repos/Crosstalk-Solutions/project-nomad/releases',
+          distReleasesApiUrl(),
           { headers: { Accept: 'application/vnd.github+json' }, timeout: 5000 }
         )
         if (!response?.data?.length) throw new Error('No releases found')
         latestVersion = response.data[0].tag_name.replace(/^v/, '').trim()
       } else {
         const response = await axios.get(
-          'https://api.github.com/repos/Crosstalk-Solutions/project-nomad/releases/latest',
+          `${distReleasesApiUrl()}/latest`,
           { headers: { Accept: 'application/vnd.github+json' }, timeout: 5000 }
         )
         if (!response?.data?.tag_name) throw new Error('Invalid response from GitHub API')
